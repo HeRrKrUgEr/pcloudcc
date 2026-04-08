@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+#include <stdio.h>
 #endif
 
 #if defined(P_OS_MACOSX)
@@ -177,7 +178,7 @@ int create_backend_event(const char*  binapi,
       }
 
       if (params->Params[i].paramtype == 2) {
-        paramsLocal[mpCnt + i] = (binparam)P_BOOL(charBuff, params->Params[i].num);
+        paramsLocal[mpCnt + i] = (binparam)P_BOOL(charBuff[i], params->Params[i].num);
         continue;
       }
     }
@@ -398,7 +399,7 @@ char* get_machine_name() {
   return psync_strdup(pcName);
 }
 /*************************************************************/
-void parse_os_path(char* path, folderPath* folders, char* delim, int mode) {
+void parse_os_path(char* path, folderPath* folders, char delim, int mode) {
   char fName[255];
   char* buff;
   int i = 0, j = 0, k = 0;
@@ -411,7 +412,7 @@ void parse_os_path(char* path, folderPath* folders, char* delim, int mode) {
     if (path[i] != delim) {
       if ((path[i] == ':') && (mode == 1)) {
         //In case we meet a ":" as in C:\ we set the name to Drive + the string before the ":"
-        fName[k] = NULL;
+        fName[k] = '\0';
         buff = psync_strcat("Drive ", &fName, NULL);
         psync_strlcpy(fName, buff, strlen(buff)+1);
 
@@ -501,7 +502,7 @@ void send_psyncs_event(const char* binapi,
 /*************************************************************/
 int set_be_file_dates(uint64_t fileid, time_t ctime, time_t mtime) {
   int callRes;
-  char msgErr[1024];
+  char* msgErr = NULL;
   binresult* retData;
 
   debug(D_NOTICE, "Update file date in the backend. FileId: [%lld], ctime: [%lld], mtime: [%lld]", fileid, ctime, mtime);
@@ -527,7 +528,7 @@ int set_be_file_dates(uint64_t fileid, time_t ctime, time_t mtime) {
     &requiredParams1,
     &optionalParams,
     &retData,
-    msgErr
+    &msgErr
   );
 
   debug(D_NOTICE, "cTime res: [%d]", callRes);
@@ -549,7 +550,7 @@ int set_be_file_dates(uint64_t fileid, time_t ctime, time_t mtime) {
     &requiredParams,
     &optionalParams,
     &retData,
-    msgErr
+    &msgErr
   );
 
   debug(D_NOTICE, "mTime res: [%d]", callRes);

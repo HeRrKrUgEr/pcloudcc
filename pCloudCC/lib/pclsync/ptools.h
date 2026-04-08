@@ -86,7 +86,7 @@ char* getMACaddr();
 /**********************************************************************************************************/
 char* get_machine_name();
 /**********************************************************************************************************/
-void parse_os_path(char* path, folderPath* folders, char* delim, int mode);
+void parse_os_path(char* path, folderPath* folders, char delim, int mode);
 /**********************************************************************************************************/
 void send_psyncs_event(const char* binapi,
                        const char* auth);

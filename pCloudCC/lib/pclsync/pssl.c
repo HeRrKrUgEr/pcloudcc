@@ -60,7 +60,7 @@ psync_encrypted_symmetric_key_t psync_ssl_copy_encrypted_symmetric_key(psync_enc
   return ret;
 }
 /**************************************************************************************************************************************************************************************/
-psync_symmetric_key_t psync_ssl_rsa_decrypt_symm_key_lock(psync_rsa_privatekey_t* rsa, const psync_encrypted_symmetric_key_t* enckey) {
+psync_symmetric_key_t psync_ssl_rsa_decrypt_symm_key_lock(psync_rsa_privatekey_t rsa, const psync_encrypted_symmetric_key_t enckey) {
   psync_symmetric_key_t sym_key;
 
   debug(D_NOTICE, "Get RSA decrypt key lock.");

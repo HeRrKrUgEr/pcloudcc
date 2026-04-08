@@ -697,7 +697,7 @@ static psync_socket *get_connected_socket(){
         P_OS_ID,
         rawtime,
         &params,
-        res);
+        NULL);
     }
     else {
       debug(D_NOTICE, "Not a first login. Run sync event.");
